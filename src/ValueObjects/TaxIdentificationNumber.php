@@ -14,14 +14,14 @@ final class TaxIdentificationNumber implements Stringable
     /**
      * Creates a new tax identification number value object.
      */
-    private function __construct(private readonly string $taxIndentificationNumber)
+    private function __construct(private readonly string $taxIdentificationNumber)
     {
         // ..
     }
 
-    public static function from(string $taxIndentificationNumber): self
+    public static function from(string $taxIdentificationNumber): self
     {
-        $cleanTaxIdentificationNumber = str_replace('RO', '', strtoupper(trim($taxIndentificationNumber)));
+        $cleanTaxIdentificationNumber = str_replace('RO', '', strtoupper(trim($taxIdentificationNumber)));
 
         return new self($cleanTaxIdentificationNumber);
     }
@@ -31,6 +31,6 @@ final class TaxIdentificationNumber implements Stringable
      */
     public function toString(): string
     {
-        return $this->taxIndentificationNumber;
+        return $this->taxIdentificationNumber;
     }
 }

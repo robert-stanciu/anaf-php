@@ -18,14 +18,7 @@ final class Ngo
      */
     public function get(): GetResponse
     {
-        $parameters = [
-            [
-                'cui' => $this->taxIdentificationNumber->toString(),
-                'data' => date('Y-m-d'),
-            ],
-        ];
-
-        $payload = Payload::create('RegCult/api/v2/ws/cult', $parameters);
+        $payload = Payload::create('RegCult/api/v2/ws/cult', $this->getParameters());
 
         /**
          * @var array{cod: int, message: string, found: array<int, array{cui: int, data: string, denumire: string, adresa: string, nrRegCom: string, telefon: string, fax: string, codPostal: string, act: string, stare_inregistrare: string, dataInceputRegCult: string, dataAnulareRegCult: string, statusRegCult: bool}>, notFound: array<int,string>} $result

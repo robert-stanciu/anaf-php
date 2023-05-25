@@ -9,14 +9,22 @@ use Anaf\Resources\BalanceSheet;
 use Anaf\Resources\Info;
 use Anaf\Resources\Ngo;
 use Anaf\ValueObjects\TaxIdentificationNumber;
+use Anaf\ValueObjects\TaxIdentificationNumberChunk;
 
+/**
+ * @template TKey of array-key
+ */
 final class Client
 {
     /**
      * Creates a Client instance with the given Tax Identification Number.
+     * @param Transporter $transporter
+     * @param TaxIdentificationNumber|TaxIdentificationNumberChunk<TKey, TaxIdentificationNumber> $taxIdentificationNumber
      */
-    public function __construct(private readonly Transporter $transporter, private readonly TaxIdentificationNumber $taxIdentificationNumber)
-    {
+    public function __construct(
+        private readonly Transporter $transporter,
+        private readonly TaxIdentificationNumber|TaxIdentificationNumberChunk $taxIdentificationNumber
+    ) {
         // ..
     }
 

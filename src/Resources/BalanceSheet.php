@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Anaf\Resources;
 
 use Anaf\Responses\BalanceSheet\GetResponse;
+use Anaf\ValueObjects\TaxIdentificationNumberChunk;
 use Anaf\ValueObjects\Transporter\Payload;
 
 final class BalanceSheet
@@ -18,6 +19,10 @@ final class BalanceSheet
      */
     public function forYear(string $year): GetResponse
     {
+        if ($this->taxIdentificationNumber instanceof TaxIdentificationNumberChunk) {
+            throw new \RuntimeException("Cannot get response from Tax Chunk");
+        }
+
         $payload = Payload::get('bilant', $this->taxIdentificationNumber->toString(), $year);
 
         /**
