@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Anaf\Resources;
 
+use Anaf\Exceptions\TaxIdentificationNumberNotFoundException;
+use Anaf\Exceptions\TransporterException;
+use Anaf\Exceptions\UnserializableResponse;
 use Anaf\Responses\Info\GetResponse;
 use Anaf\ValueObjects\Transporter\Payload;
 
@@ -15,8 +18,12 @@ final class Info
      * Get public info about the given tax identification number
      *
      * @see https://static.anaf.ro/static/10/Anaf/Informatii_R/Servicii_web/doc_WS_V8.txt
+     * @return array<int, GetResponse>
+     * @throws TaxIdentificationNumberNotFoundException
+     * @throws TransporterException
+     * @throws UnserializableResponse
      */
-    public function get(): GetResponse
+    public function get(): array
     {
         $payload = Payload::create('PlatitorTvaRest/api/v8/ws/tva', $this->getParameters());
 
@@ -25,6 +32,12 @@ final class Info
          */
         $result = $this->transporter->requestObject($payload);
 
-        return GetResponse::from($result['found'][0]);
+        $response = [];
+
+        foreach ($result['found'] as $found) {
+            $response[] = GetResponse::from($found);
+        }
+
+        return $response;
     }
 }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Anaf\Resources;
 
+use Anaf\Exceptions\TaxIdentificationNumberNotFoundException;
+use Anaf\Exceptions\TransporterException;
+use Anaf\Exceptions\UnserializableResponse;
 use Anaf\Responses\Ngo\GetResponse;
 use Anaf\ValueObjects\Transporter\Payload;
 
@@ -15,8 +18,12 @@ final class Ngo
      * Get public info about the given tax identification number if are registered in the Register of religious entities/units
      *
      * @see https://static.anaf.ro/static/10/Anaf/Informatii_R/index_cult_v2.html
+     * @return array<int, GetResponse>
+     * @throws TaxIdentificationNumberNotFoundException
+     * @throws TransporterException
+     * @throws UnserializableResponse
      */
-    public function get(): GetResponse
+    public function get(): array
     {
         $payload = Payload::create('RegCult/api/v2/ws/cult', $this->getParameters());
 
@@ -25,6 +32,12 @@ final class Ngo
          */
         $result = $this->transporter->requestObject($payload);
 
-        return GetResponse::from($result['found'][0]);
+        $response = [];
+
+        foreach ($result['found'] as $found) {
+            $response[] = GetResponse::from($found);
+        }
+
+        return $response;
     }
 }
