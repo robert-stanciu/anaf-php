@@ -32,10 +32,17 @@ final class Info
          */
         $result = $this->transporter->requestObject($payload);
 
-        $response = [];
+        $response = [
+            'found' => [],
+            'notFound' => []
+        ];
 
         foreach ($result['found'] as $found) {
-            $response[] = GetResponse::from($found);
+            $response['found'][] = GetResponse::from($found);
+        }
+
+        foreach ($result['notFound'] as $notFound) {
+            $response['notFound'][] = $notFound;
         }
 
         return $response;

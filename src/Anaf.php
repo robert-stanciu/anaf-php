@@ -16,27 +16,13 @@ final class Anaf
     /**
      * Creates a new Anaf Client with the given Tax Identification Number (romanian CUI).
      */
-    public static function for(string $taxIdentificationNumber): Client
+    public static function for(string|array $taxIdentificationNumber): Client
     {
-        $taxIdentificationNumber = TaxIdentificationNumber::from($taxIdentificationNumber);
-
-        $baseUri = BaseUri::from('webservicesp.anaf.ro');
-
-        $headers = Headers::withContentType(ContentType::JSON);
-
-        $client = new GuzzleClient();
-
-        $transporter = new HttpTransporter($client, $baseUri, $headers);
-
-        return new Client($transporter, $taxIdentificationNumber);
-    }
-
-    /**
-     * Creates a new Anaf Client with the given Tax Identification Number (romanian CUI).
-     */
-    public static function many(array $taxIdentificationNumbers): Client
-    {
-        $taxIdentificationNumber = new TaxIdentificationNumberChunk($taxIdentificationNumbers);
+        if (is_array($taxIdentificationNumber)) {
+            $taxIdentificationNumber = new TaxIdentificationNumberChunk($taxIdentificationNumber);
+        } else {
+            $taxIdentificationNumber = TaxIdentificationNumber::from($taxIdentificationNumber);
+        }
 
         $baseUri = BaseUri::from('webservicesp.anaf.ro');
 
