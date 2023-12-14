@@ -43,6 +43,7 @@ final class RetrieveResponseVatRegistrationAtCheckout
             'update_date' => $this->updateDate,
             'publish_date' => $this->publishDate,
             'updated_type' => $this->updatedType,
+            'status' => $this->status,
         ];
     }
 }
